@@ -67,13 +67,12 @@ const Navbar = () => {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 {NavbarMenu.map((item) => (
-                                    <a
+                                    <Link to={item.link}
                                         key={item.id}
-                                        href={item.link}
                                         className="inline-block py-1 px-3 hover:text-amber-500 font-semibold"
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -100,14 +99,13 @@ const Navbar = () => {
                 >
                     <div className="space-y-1 px-2 pt-2 pb-3 transition-opacity duration-300 ease-in-out">
                         {NavbarMenu.map((item) => (
-                            <a
+                            <Link to={item.link}
                                 key={item.id}
-                                href={item.link}
                                 className="block py-1 px-3 hover:text-amber-500 font-semibold"
                                 onClick={() => setIsOpen(false)} // optional: close after click
                             >
                                 {item.title}
-                            </a>
+                            </Link>
                         ))}
                         <Link to="/login" onClick={() => setIsOpen(false)}>
                             <div className="mt-2 block px-3 py-2 text-amber-500 hover:bg-amber-500 hover:text-white rounded-md border border-amber-500 font-semibold">
