@@ -4,6 +4,8 @@ import { useLocalStorage } from 'react-use';
 import {postApi} from "../lib/api/apiReq.js";
 import {Link} from "react-router";
 import {alertError} from "../lib/alert.js";
+import {motion} from "framer-motion";
+import {commonPage} from "../components/animation/PageVariants.js";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -40,10 +42,15 @@ export default function Login() {
         finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <motion.div className="min-h-screen bg-gray-50 flex items-center justify-center px-4"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={commonPage}
+        >
             <div className="relative w-full max-w-md rounded-[calc(var(--radius-lg)+1px)] bg-white shadow ring-1 ring-black/5">
                 {/* Tombol Kembali */}
                 <Link to="/" className="absolute -top-12 left-0 inline-flex items-center text-amber-600 hover:text-amber-700 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-amber-400">
@@ -112,6 +119,6 @@ export default function Login() {
                     </p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
