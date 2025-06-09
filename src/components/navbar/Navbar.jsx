@@ -3,9 +3,11 @@ import { FaSuperpowers } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 import React from "react";
 import { Link } from "react-router";
+import {motion, AnimatePresence} from "framer-motion";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
+    const toggleMenu = () => setIsOpen(!isOpen);
 
     return (
         <nav className="bg-gray-50 fixed top-0 left-0 right-0 z-50 shadow">
@@ -14,44 +16,41 @@ const Navbar = () => {
                     {/* Mobile Menu Button */}
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                         <button
-                            type="button"
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-amber-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                            aria-controls="mobile-menu"
-                            aria-expanded={isOpen}
+                            onClick={toggleMenu}
+                            className="p-2 text-gray-600 hover:text-amber-500 focus:outline-none"
+                            aria-label="Toggle menu"
                         >
-                            <span className="sr-only">Open main menu</span>
-                            {isOpen ? (
-                                // Close icon
-                                <svg
-                                    className="size-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                >
-                                    <path
+                            <motion.svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                                initial={{ rotate: 0 }}
+                                animate={{ rotate: isOpen ? 90 : 0 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {isOpen ? (
+                                    <motion.path
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        exit={{ pathLength: 0 }}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         d="M6 18L18 6M6 6l12 12"
                                     />
-                                </svg>
-                            ) : (
-                                // Menu icon
-                                <svg
-                                    className="size-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                >
-                                    <path
+                                ) : (
+                                    <motion.path
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        exit={{ pathLength: 0 }}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                                     />
-                                </svg>
-                            )}
+                                )}
+                            </motion.svg>
                         </button>
                     </div>
 
@@ -90,32 +89,37 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu */}
-            {isOpen && (
-                <div
-                    id="mobile-menu"
-                    className={`sm:hidden overflow-hidden transition-[max-height] duration-500 ease-in-out ${
-                        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                >
-                    <div className="space-y-1 px-2 pt-2 pb-3 transition-opacity duration-300 ease-in-out">
-                        {NavbarMenu.map((item) => (
-                            <Link to={item.link}
-                                key={item.id}
-                                className="block py-1 px-3 hover:text-amber-500 font-semibold"
-                                onClick={() => setIsOpen(false)} // optional: close after click
-                            >
-                                {item.title}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        id="mobile-menu"
+                        className={`sm:hidden overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                        }`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <div className="space-y-1 px-2 pt-2 pb-3 transition-opacity duration-300 ease-in-out">
+                            {NavbarMenu.map((item) => (
+                                <Link to={item.link}
+                                      key={item.id}
+                                      className="block py-1 px-3 hover:text-amber-500 font-semibold"
+                                      onClick={() => setIsOpen(false)} // optional: close after click
+                                >
+                                    {item.title}
+                                </Link>
+                            ))}
+                            <Link to="/login" onClick={() => setIsOpen(false)}>
+                                <div className="mt-2 block px-3 py-2 text-amber-500 hover:bg-amber-500 hover:text-white rounded-md border border-amber-500 font-semibold">
+                                    Login
+                                </div>
                             </Link>
-                        ))}
-                        <Link to="/login" onClick={() => setIsOpen(false)}>
-                            <div className="mt-2 block px-3 py-2 text-amber-500 hover:bg-amber-500 hover:text-white rounded-md border border-amber-500 font-semibold">
-                                Login
-                            </div>
-                        </Link>
-                    </div>
-                </div>
-
-            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 };
