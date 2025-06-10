@@ -41,6 +41,11 @@ export default function Countdown() {
     const COUNTDOWN_FROM = getData.event_date;
     const COUNTDOWN_NAME = getData.title
 
+    useEffect(() => {
+        document.title = COUNTDOWN_NAME;
+    },[COUNTDOWN_NAME]);
+
+
     const SECOND = 1000;
     const MINUTE = SECOND * 60;
     const HOUR = MINUTE * 60;
